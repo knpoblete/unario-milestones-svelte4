@@ -1,8 +1,8 @@
 <script>
 	let {
-		title = "Title TK",
-		description = "Description TK",
-		url = "https://pudding.cool",
+		title = "UNARIO Milestones",
+		description = "UNARIO Milestones",
+		url = "https://unario-milestones.onrender.com/",
 		keywords = "",
 		preloadFont = []
 	} = $props();
