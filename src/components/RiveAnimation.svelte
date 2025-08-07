@@ -34,7 +34,7 @@
 </script>
 
 <div class="main-container">
-	<canvas bind:this={canvas} width="1920" height="1000"></canvas>
+	<canvas bind:this={canvas} width="1440" height="900"></canvas>
 	<div class="headline">
 	</div>
 	<!-- <button
