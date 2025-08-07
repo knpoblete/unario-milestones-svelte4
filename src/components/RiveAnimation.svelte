@@ -12,7 +12,8 @@
 
 		// Create the Rive instance
 		const riveInstance = new rive.Rive({
-			src: "/animations/unario_interactive_full_animation_root.riv",
+			src: "/animations/wheel_animation_kath.riv",
+			// src: "/animations/unario_interactive_full_animation_data_bind_rotate_b3.riv",
 			canvas,
 			autoplay: true,
 			stateMachines: "UNARIO Interactive",
@@ -20,11 +21,12 @@
 			onLoad: () => {
 				riveInstance.resizeDrawingSurfaceToCanvas();
 				const inputs = riveInstance.stateMachineInputs("UNARIO Interactive");
-				// Reference the inputs we defined in Rive
-				isJumpingInput = inputs.find((i) => i.name === "isRotating");
+				
+				// Use your trigger input here
+				// isJumpingInput = inputs.find((i) => i.name === "isHovering");
 			},
-		});
 
+		});
         
 
 		// Cleanup the Rive instance when the component unmounts
@@ -33,10 +35,14 @@
 		};
 	});
 
-    
 </script>
 
-<canvas bind:this={canvas} width="100%" height="100%"></canvas>
+<div class="main-container">
+
+	<canvas bind:this={canvas} width="100%" height="100%"></canvas>
+
+	
+</div>
 
 
 <style>
