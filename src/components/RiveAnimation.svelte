@@ -11,7 +11,7 @@
 
 		// Create the Rive instance
 		const riveInstance = new rive.Rive({
-			src: "/src/animations/unario_interactive_full_animation_root.riv",
+			src: "/animations/unario_interactive_full_animation_root.riv",
 			canvas,
 			autoplay: true,
 			stateMachines: "UNARIO Interactive",
