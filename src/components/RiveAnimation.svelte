@@ -5,6 +5,7 @@
 
 	let isJumpingInput = $state();
 	let canvas = $state();
+    let ctx;
 
 	onMount(() => {
 		if (!canvas) return;
@@ -31,23 +32,26 @@
 			riveInstance.cleanup();
 		};
 	});
+
+    
 </script>
 
-<canvas bind:this={canvas} width="500" height="500"></canvas>
-<!-- <div class="main-container">
-	
-	<div class="headline">
-	</div> -->
-	<!-- <button
-		class="cta"
-		onclick={() => {
-            console.log(isJumpingInput.value)
-			if (isJumpingInput) isJumpingInput.value = true;
-		}}
-		onmouseleave={() => {
-			if (isJumpingInput) isJumpingInput.value = false;
-		}}
-	>
-		<p>Click me</p>
-	</button> -->
-<!-- </div> -->
+<canvas bind:this={canvas} width="100%" height="100%"></canvas>
+
+
+<style>
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  :global(body, html) {
+    margin: 0;
+    height: 100%;
+  }
+
+  :global(main) {
+    height: 100vh;
+  }
+</style>
