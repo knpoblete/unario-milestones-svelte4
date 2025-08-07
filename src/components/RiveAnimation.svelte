@@ -33,10 +33,11 @@
 	});
 </script>
 
-<div class="main-container">
-	<canvas bind:this={canvas} width="1440" height="900"></canvas>
+<canvas bind:this={canvas} width="500" height="500"></canvas>
+<!-- <div class="main-container">
+	
 	<div class="headline">
-	</div>
+	</div> -->
 	<!-- <button
 		class="cta"
 		onclick={() => {
@@ -49,4 +50,4 @@
 	>
 		<p>Click me</p>
 	</button> -->
-</div>
+<!-- </div> -->
