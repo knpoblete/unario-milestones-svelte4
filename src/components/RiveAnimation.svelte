@@ -41,17 +41,21 @@
 
 <style>
   canvas {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     display: block;
+	
   }
 
-  :global(body, html) {
+  /* :global(body, html) {
     margin: 0;
+    padding: 0;
+    width: 100%;
     height: 100%;
+    overflow: hidden;
   }
 
   :global(main) {
     height: 100vh;
-  }
+  } */
 </style>
