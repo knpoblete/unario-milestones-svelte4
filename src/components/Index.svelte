@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from "svelte";
 	import Footer from "$components/Footer.svelte";
-	import CarouselSwitcher from "$components/CarouselSwitcher.svelte";
+	// import CarouselSwitcher from "$components/CarouselSwitcher.svelte";
 	import RiveAnimation from "./RiveAnimation.svelte";
 	// const copy = getContext("copy");
 	// const data = getContext("data");

@@ -40,6 +40,7 @@
 	},
 	"browserslist": "> 0.5%, last 4 versions, not ie <= 11, not ie_mob <= 11",
 	"dependencies": {
-		"@rive-app/canvas": "^2.30.4"
+		"@rive-app/canvas": "^2.30.4",
+		"@rive-app/webgl2": "^2.30.4"
 	}
 }

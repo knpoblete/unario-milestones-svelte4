@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from "svelte";
-	import * as rive from "@rive-app/canvas";
+	// import * as rive from "@rive-app/canvas";
+    import * as rive from "@rive-app/webgl2";
 
 	let isJumpingInput = $state();
 	let canvas = $state();
@@ -10,17 +11,20 @@
 
 		// Create the Rive instance
 		const riveInstance = new rive.Rive({
-			src: "/src/animations/playfulOnboarding.riv",
+			src: "/src/animations/unario_interactive_full_animation_root.riv",
 			canvas,
 			autoplay: true,
-			stateMachines: "blob",
+			stateMachines: "UNARIO Interactive",
+            
 			onLoad: () => {
 				riveInstance.resizeDrawingSurfaceToCanvas();
-				const inputs = riveInstance.stateMachineInputs("blob");
+				const inputs = riveInstance.stateMachineInputs("UNARIO Interactive");
 				// Reference the inputs we defined in Rive
-				isJumpingInput = inputs.find((i) => i.name === "isJumping");
+				isJumpingInput = inputs.find((i) => i.name === "isRotating");
 			},
 		});
+
+        
 
 		// Cleanup the Rive instance when the component unmounts
 		return () => {
@@ -30,20 +34,19 @@
 </script>
 
 <div class="main-container">
-	<canvas bind:this={canvas} width="500" height="500"></canvas>
+	<canvas bind:this={canvas} width="1920" height="1000"></canvas>
 	<div class="headline">
-		<p class="title">You're all set!</p>
-		<p class="headline-text">We're excited to have you aboard</p>
 	</div>
-	<button
+	<!-- <button
 		class="cta"
-		onmouseenter={() => {
+		onclick={() => {
+            console.log(isJumpingInput.value)
 			if (isJumpingInput) isJumpingInput.value = true;
 		}}
 		onmouseleave={() => {
 			if (isJumpingInput) isJumpingInput.value = false;
 		}}
 	>
-		<p>Hover me</p>
-	</button>
+		<p>Click me</p>
+	</button> -->
 </div>
