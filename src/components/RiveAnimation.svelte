@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from "svelte";
 	import * as rive from "@rive-app/webgl2";
-	import background_svg from "/animations/background.svg";
+	import background_svg from "$svg/background.svg";
 
   let canvas = $state();
   let riveInstance;
