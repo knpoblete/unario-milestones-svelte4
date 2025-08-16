@@ -1,67 +1,100 @@
 <script>
 	import { onMount } from "svelte";
-	// import * as rive from "@rive-app/canvas";
-    import * as rive from "@rive-app/webgl2";
+	import * as rive from "@rive-app/webgl2";
+	import background_svg from "/animations/background.svg";
 
-	let isJumpingInput = $state();
-	let canvas = $state();
-    let ctx;
+  let canvas = $state();
+  let riveInstance;
+  let ro; // ResizeObserver
 
-	onMount(() => {
-		if (!canvas) return;
+  function resizeCanvasToDisplaySize() {
+    if (!canvas || !riveInstance) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2); // cap for perf
+    // CSS controls the *display* size; use that to set the pixel buffer
+    const { clientWidth, clientHeight } = canvas;
+    canvas.width  = Math.floor(clientWidth  * dpr);
+    canvas.height = Math.floor(clientHeight * dpr);
+    riveInstance.resizeDrawingSurfaceToCanvas();
+  }
 
-		// Create the Rive instance
-		const riveInstance = new rive.Rive({
-			src: "/animations/wheel_animation_kath.riv",
-			// src: "/animations/unario_interactive_full_animation_data_bind_rotate_b3.riv",
-			canvas,
-			autoplay: true,
-			stateMachines: "UNARIO Interactive",
-            
-			onLoad: () => {
-				riveInstance.resizeDrawingSurfaceToCanvas();
-				const inputs = riveInstance.stateMachineInputs("UNARIO Interactive");
-				
-				// Use your trigger input here
-				// isJumpingInput = inputs.find((i) => i.name === "isHovering");
-			},
+  onMount(() => {
+    // IMPORTANT: put your .riv in /static and reference like /animations/...
+    riveInstance = new rive.Rive({
+      src: "/animations/[approach_1].riv",
+      canvas,
+      autoplay: true,
+      stateMachines: "UNARIO Interactive",
+      layout: new rive.Layout({
+        fit: rive.Fit.COVER,              // fills the canvas; can crop
+        alignment: rive.Alignment.Center, // center the artboard
+      }),
+      onLoad: () => {
+        resizeCanvasToDisplaySize();
+        // Access inputs if you need them:
+        // const inputs = riveInstance.stateMachineInputs("UNARIO Interactive");
+        // const isRotating = inputs.find((i) => i.name === "isRotating");
+      },
+    });
 
-		});
-        
+    ro = new ResizeObserver(resizeCanvasToDisplaySize);
+    ro.observe(canvas);
 
-		// Cleanup the Rive instance when the component unmounts
-		return () => {
-			riveInstance.cleanup();
-		};
-	});
-
+    return () => {
+      ro?.disconnect();
+      riveInstance?.cleanup();
+    };
+  });
 </script>
 
-<div class="main-container">
 
-	<canvas bind:this={canvas} width="100%" height="100%"></canvas>
-
-	
+<div class="outer">
+  <div class="top" aria-hidden="true">{@html background_svg}</div>
+  <div class="wheel">
+  	<canvas bind:this={canvas} class="rive"></canvas>
+	</div>
 </div>
 
-
 <style>
-  canvas {
-    width: 100vw;
-    height: 100vh;
-    display: block;
-	
+  /* Full-bleed section that spans the page width */
+  .wheel {
+    width: 100vw;     /* full width of the viewport */
+    height: 60vh;     /* pick your height: 50–80vh is a nice hero */
+    overflow: hidden; /* hide cropped edges when using COVER */
   }
 
-  /* :global(body, html) {
-    margin: 0;
-    padding: 0;
+  .top {
+    width: 100vw;     /* full width of the viewport */
+    height: 60vh;     /* pick your height: 50–80vh is a nice hero */
+    overflow: hidden; /* hide cropped edges when using COVER */
+  }
+
+  /* Make the canvas fill its container; JS sets the pixel buffer */
+  .rive {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    display: block;
   }
 
-  :global(main) {
-    height: 100vh;
-  } */
+  .outer {
+  display: grid;
+  grid-template: 1fr / 1fr;
+  place-items: center;
+}
+.outer > * {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+}
+.outer .below {
+  z-index: 1;
+  /* background-color: aqua; */
+}
+.outer .top {
+  z-index: 2;
+  pointer-events: none;
+  /* background-color: brown; */
+}
+
+  /* Optional: remove default body margin if you want true edge-to-edge */
+  :global(html, body) { margin: 0; }
+
 </style>
