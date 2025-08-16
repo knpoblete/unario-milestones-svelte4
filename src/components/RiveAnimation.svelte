@@ -57,14 +57,14 @@
 <style>
   /* Full-bleed section that spans the page width */
   .wheel {
-    width: 100vw;     /* full width of the viewport */
-    height: 60vh;     /* pick your height: 50–80vh is a nice hero */
+    width: 100%;     /* full width of the viewport */
+    height: 100%;     /* pick your height: 50–80vh is a nice hero */
     overflow: hidden; /* hide cropped edges when using COVER */
   }
 
   .top {
-    width: 100vw;     /* full width of the viewport */
-    height: 60vh;     /* pick your height: 50–80vh is a nice hero */
+    width: 100%;     /* full width of the viewport */
+    height: 100%;     /* pick your height: 50–80vh is a nice hero */
     overflow: hidden; /* hide cropped edges when using COVER */
   }
 
