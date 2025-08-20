@@ -17,6 +17,7 @@ let draining = false;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 
+
   // Content
   let slides = $state([
     { year: "2019", text: "text 1" },
@@ -90,28 +91,47 @@ async function drain() {
         fit: rive.Fit.COVER,
         alignment: rive.Alignment.Center,
       }),
+      autoBind: true,
       onLoad: () => {
-        try {
-          const inputs = riveInstance.stateMachineInputs(STATE_MACHINE) ?? [];
-          nextTriggerInput =
-            inputs.find(i => i.name === NEXT_TRIGGER_NAME && i.type === "trigger") || null;
-        } catch {
-          nextTriggerInput = null;
-        }
+        console.log("Rive loaded");
+
+        // ✅ Inspect all inputs on this state machine
+        const inputs = riveInstance.stateMachineInputs(STATE_MACHINE) ?? [];
+        inputs.forEach((input) => {
+          console.log("Input:", input.name, "Type:", input.type);
+        });
+
+        // (Optional) find a specific input
+        // const isUp = inputs.find((i) => i.name === "isUp");
+        // const nextTrigger = inputs.find((i) => i.name === "Next" && i.type === "trigger");
+        // nextTrigger?.fire();
+
+        // Initial size
         resizeCanvasToDisplaySize();
+      },
+      onStateChange: (event) => {
+        // Logs state changes like button presses
+        if (event.data[0] == "WheelSpin") {
+			console.log("State change:", event.data[0]); // array of state names entered
+			onCanvasClick()
+		}
       },
     });
 
-    canvas.addEventListener("pointerdown", onCanvasClick, { passive: true });
+    // canvas.addEventListener("pointerdown", onCanvasClick, { passive: true });
 
     ro = new ResizeObserver(resizeCanvasToDisplaySize);
     ro.observe(canvas);
 
     return () => {
       ro?.disconnect();
-      canvas?.removeEventListener("click", onCanvasClick);
+      canvas?.removeEventListener("pointerdown", onCanvasClick);
       riveInstance?.cleanup();
     };
+  });
+
+  onDestroy(() => {
+    clearTimeout(hideTO);
   });
 
   onDestroy(() => {
