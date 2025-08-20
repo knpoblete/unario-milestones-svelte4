@@ -20,11 +20,11 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   // Content
   let slides = $state([
     { year: "2019", text: "text 1" },
-    { year: "2021", text: "text 2" },
-    { year: "2022", text: "text 3" },
-    { year: "2023", text: "text 4" },
-    { year: "2024", text: "text 5" },
-    { year: "2025", text: "text 6" },
+    { year: "2020", text: "text 2" },
+    { year: "2021", text: "text 3" },
+    { year: "2022", text: "text 4" },
+    { year: "2023", text: "text 5" },
+    { year: "2024", text: "text 6" },
     { year: "last", text: "text" },
   ]);
 
