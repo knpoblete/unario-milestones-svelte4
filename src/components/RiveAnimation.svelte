@@ -165,116 +165,132 @@ async function drain() {
   });
 </script>
 
-<div class="outer">
-  <div class="top" aria-hidden="true">{@html background_svg}</div>
-
-  <div class="wheel">
+<div class="scrollport">
+  <div class="stage" role="img" aria-label="1920×1080 stage">
+    <!-- Canvas (Rive draws here) -->
     <canvas
       bind:this={canvas}
       class="rive"
-      fit="cover"
       aria-label="Rive canvas (click to change text)"
     ></canvas>
 
+    <!-- SVG overlay (same box as the canvas) -->
+    <div class="overlay-svg" aria-hidden="true">
+      {@html background_svg}
+    </div>
+
+    <!-- Your text overlays -->
     {#if slides.length}
-
-   
-
-      <div
-        class="overlay-text-center"
-        class:hidden={isHidden}
-        aria-live="polite"
-        aria-hidden={isHidden}
-      >
+      <div class="overlay-text-center" class:hidden={isHidden} aria-live="polite" aria-hidden={isHidden}>
         <img src={slides[idx].photo} />
         <h1>{slides[idx].year}</h1>
         <p>{@html slides[idx].text}</p>
-        
       </div>
 
-     <div
-      class="overlay-text-left"
-      class:hidden={isHidden}
-      aria-live="polite"
-      aria-hidden={isHidden}
-     >
-     <img src={slides[idx_prev].photo} />
-      <h1>{slides[idx_prev].year}</h1>
-      <p>{@html slides[idx_prev].text}</p>
-     </div>
+      <div class="overlay-text-left" class:hidden={isHidden} aria-live="polite" aria-hidden={isHidden}>
+        <img src={slides[idx_prev].photo} />
+        <h1>{slides[idx_prev].year}</h1>
+        <p>{@html slides[idx_prev].text}</p>
+      </div>
 
-     <div
-      class="overlay-text-right"
-      class:hidden={isHidden}
-      aria-live="polite"
-      aria-hidden={isHidden}
-     >
-      <!-- <h1>{slides[idx_next].year}</h1>
-      <p>{slides[idx_next].text}</p> -->
-     </div>
-
+      <div class="overlay-text-right" class:hidden={isHidden} aria-live="polite" aria-hidden={isHidden}>
+        <!-- future right-side content -->
+      </div>
     {/if}
   </div>
 </div>
 
 <style>
-  .wheel {
+  /* Make the viewport fill the window */
+  :global(html, body) { margin: 0; height: 100%; }
+  * { box-sizing: border-box; }
+
+  /* Scrolls when the window is smaller than 1920×1080 */
+  .scrollport {
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;            /* shows scrollbars only when needed */
+    overscroll-behavior: contain;
+  }
+
+  /* Fixed-size stage that both canvas and SVG align to */
+  .stage {
     position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+    width: 1920px;
+    height: 1080px;
+    margin: 0;                 /* keep (0,0) at top-left for coordinates */
+    
   }
 
-  .top {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .rive {
+  /* Stack the drawing layers perfectly */
+  .rive,
+  .overlay-svg {
+    position: absolute;
+    inset: 0;                  /* top/right/bottom/left: 0 */
     width: 100%;
     height: 100%;
     display: block;
-    cursor: pointer; /* hint that canvas is interactive */
+  }
+
+  .rive {
+    z-index: 1;
+    cursor: pointer;           /* hint that canvas is interactive */
+  }
+
+  .overlay-svg {
+    z-index: 2;
+    pointer-events: none;      /* let clicks go through to the canvas */
+  }
+
+  /* Ensure injected SVG fills the overlay box */
+  :global(.overlay-svg svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Optional: center the stage when there’s extra room */
+  @media (min-width: 1920px) and (min-height: 1080px) {
+    .scrollport {
+      display: grid;
+      place-items: center;
+    }
+  }
+
+  /* ===== Overlay text styles (keep from your original, adjusted to sit on .stage) ===== */
+
+  .overlay-text-center,
+  .overlay-text-left,
+  .overlay-text-right {
+    position: absolute;
+    z-index: 3;
+    pointer-events: none; /* pass clicks through to canvas */
+    color: #0099D8;
+    font-family: "Ideal Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    gap: 0.5rem;
+    opacity: 1;
+    transition: opacity 0.2s ease;
   }
 
   .overlay-text-center {
-    font-family: "Ideal Sans", sans-serif;
     max-width: 480px;
-    position: absolute;
     top: 16%;
     left: 62%;
     right: auto;
     bottom: auto;
-    /* transform: translate(-50%, -50%);  // use if you prefer center anchoring */
     display: flex;
     flex-direction: column;
     text-align: left;
     padding: 2rem;
-    z-index: 3;
-    pointer-events: none; /* pass clicks through to canvas */
-    color: #0099D8;
-    gap: 0.5rem;
-    opacity: 1;
-    transition: opacity 0.2s ease; /* match HIDE_MS */
-    align-items: left;
   }
-
   .overlay-text-center.hidden { opacity: 0; }
-
-  .overlay-text-center img {
-    margin: 0;
-  }
-  
+  .overlay-text-center img { display: block; max-width: 100%; height: auto; margin: 0; }
   .overlay-text-center h1 {
     font-weight: 600;
     font-size: clamp(1.5rem, 6vw, 2.5rem);
     margin: 0;
     line-height: 0.8;
   }
-
   .overlay-text-center p {
     font-weight: 400;
     color: #989898;
@@ -284,56 +300,30 @@ async function drain() {
     opacity: 0.9;
   }
 
-  .outer {
-    display: grid;
-    grid-template: 1fr / 1fr;
-    place-items: center;
-  }
-  .outer > * {
-    grid-column: 1 / 1;
-    grid-row: 1 / 1;
-  }
-
-
   .overlay-text-left {
-    display: inline-block;   /* needed so transform applies properly */
+    display: inline-block;
     transform: rotate(-45deg);
-    font-family: "Ideal Sans", sans-serif;
     max-width: 450px;
-    position: absolute;
     top: 45%;
     left: 25%;
     right: auto;
     bottom: auto;
-    /* transform: translate(-50%, -50%);  // use if you prefer center anchoring */
-    /* display: flex; */
-    flex-direction: column;
     text-align: left;
     padding: 2rem;
-    z-index: 3;
-    pointer-events: none; /* pass clicks through to canvas */
-    color: #0099D8;
-    gap: 0.5rem;
-    opacity: 1;
-    transition: opacity 0.1s ease; /* match HIDE_MS */
-    
-    /* -webkit-mask-image: linear-gradient(to right, black 60%, transparent 60%); */
+    transition: opacity 0.1s ease; /* faster fade if you like */
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
     mask-image: linear-gradient(to left, black 1%, transparent 40%);
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
   }
-
   .overlay-text-left.hidden { opacity: 0; }
-
   .overlay-text-left h1 {
     font-weight: 600;
     font-size: clamp(1.5rem, 6vw, 2.5rem);
     margin: 0;
     line-height: 1.1;
   }
-
   .overlay-text-left p {
     font-weight: 400;
     color: #989898;
@@ -344,52 +334,33 @@ async function drain() {
   }
 
   .overlay-text-right {
-    display: inline-block;   /* needed so transform applies properly */
+    display: inline-block;
     transform: rotate(45deg);
-    font-family: "Ideal Sans", sans-serif;
     max-width: 450px;
-    position: absolute;
     top: 45%;
     left: 98%;
     right: auto;
     bottom: auto;
-    /* transform: translate(-50%, -50%);  // use if you prefer center anchoring */
-    /* display: flex; */
-    flex-direction: column;
     text-align: left;
     padding: 2rem;
-    z-index: 3;
-    pointer-events: none; /* pass clicks through to canvas */
-    color: #0099D8;
-    gap: 0.5rem;
-    opacity: 1;
-    transition: opacity 0.1s ease; /* match HIDE_MS */
-    
-    /* -webkit-mask-image: linear-gradient(to right, black 60%, transparent 60%); */
+    transition: opacity 0.1s ease;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
     mask-image: linear-gradient(to right, black 1%, transparent 40%);
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
   }
-
   .overlay-text-right.hidden { opacity: 0; }
-
   .overlay-text-right h1 {
     font-weight: 600;
     font-size: clamp(1.5rem, 6vw, 2.5rem);
     margin: 0;
-    /* line-height: 1.1; */
   }
-
   .overlay-text-right p {
     font-weight: 400;
     color: #989898;
     font-size: clamp(1.25rem, 2.5vw, 1.2rem);
     margin: 0;
-    /* line-height: 1.3; */
     opacity: 0.9;
   }
-
-  :global(html, body) { margin: 0; }
 </style>
