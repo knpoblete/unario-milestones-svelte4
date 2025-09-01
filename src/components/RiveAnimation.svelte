@@ -38,8 +38,8 @@
   ]);
 
   let idx = $state(0);
-  let idx_prev = (idx - 1 + slides.length) % slides.length;
-  let idx_next = (idx + 1 + slides.length) % slides.length;
+  const idx_prev = $derived((idx - 1 + slides.length) % slides.length);
+  const idx_next = $derived((idx + 1) % slides.length);
 
   // Rive
   const STATE_MACHINE = "UNARIO Interactive";
@@ -78,13 +78,10 @@ async function drain() {
   await sleep(HIDE_MS);
 
   while (pending > 0) {
-    pending -= 1;
-    idx = (idx + 1) % slides.length; // apply exactly one step per click
-    idx_prev = (idx - 1 + slides.length) % slides.length;
-    idx_next = (idx + 1 + slides.length) % slides.length;
-    // tiny gap so multiple triggers don't collapse into one visual frame
-    await sleep(50);
-  }
+  pending -= 1;
+  idx = (idx + 1) % slides.length;   // this alone will recompute idx_prev/idx_next
+  await sleep(50);
+}
 
   // fade back in once with the final text
   isHidden = false;
@@ -191,6 +188,7 @@ async function drain() {
         <img src={slides[idx_prev].photo} />
         <h1>{slides[idx_prev].year}</h1>
         <p>{@html slides[idx_prev].text}</p>
+        
       </div>
 
       <div class="overlay-text-right" class:hidden={isHidden} aria-live="polite" aria-hidden={isHidden}>
