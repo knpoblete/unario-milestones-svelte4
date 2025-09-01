@@ -33,7 +33,8 @@
     { year: "ROME 2011", text: "Solidifying UNARIO's membership and identity.", photo: "/photos/04_Rome 2011@4x.png" },
     { year: "MANILA 2015", text: "Recognizing the need for a network of ombuds and mediators.", photo: "/photos/05_Manila 2015@4x.png"  },
     { year: "BANGKOK 2019", text: "Promoting dignity, civility, and mental health.", photo: "/photos/06_Bangkok 2019@4x.png"  },
-    { year: "MONTEVIDEO 2023", text: "Driving systemic change and addressing mental health.", photo: "/photos/07_Montevideo 2023@4x.png"  },
+    { year: "MONTEVIDEO 2023", text: "Driving systemic change and addressing mental health.", photo: "/photos/07_Montevideo 2023@4x.png",  },
+    { year: "WASHINGTON, D.C. 2024", text: "Shaping the future by unlocking the potential of AI and technology.", photo: "/photos/08_Washington 2024@4x.png",  },
   ]);
 
   let idx = $state(0);
