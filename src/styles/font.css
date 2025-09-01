@@ -1,10 +1,15 @@
 @font-face {
-	font-family: "Atlas Grotesk";
-	src: url("https://pudding.cool/assets/fonts/atlas/AtlasGrotesk-Regular-Web.woff2") format("woff2");
-	font-weight: 400;
-	font-style: normal;
-	font-stretch: normal;
-	font-display: swap;
+  font-family: "Ideal Sans";
+  src: url("/fonts/IdealSans-Semibold-Pro.otf") format("opentype");
+  font-weight: 600; /* semibold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ideal Sans";
+  src: url("/fonts/IdealSans-Book-Pro.otf") format("opentype");
+  font-weight: 400; /* book/regular */
+  font-style: normal;
 }
 
 @font-face {
