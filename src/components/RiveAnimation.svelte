@@ -251,7 +251,7 @@ async function drain() {
   @media (min-width: 1920px) and (min-height: 1080px) {
     .scrollport {
       display: grid;
-      place-items: center;
+      place-items: start center;
     }
   }
 
