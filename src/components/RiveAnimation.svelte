@@ -272,7 +272,7 @@ async function drain() {
 
   .overlay-text-center {
     max-width: 480px;
-    top: 16%;
+    top: 15%;
     left: 62%;
     right: auto;
     bottom: auto;
@@ -302,8 +302,8 @@ async function drain() {
     display: inline-block;
     transform: rotate(-45deg);
     max-width: 450px;
-    top: 45%;
-    left: 25%;
+    top: 44%;
+    left: 26%;
     right: auto;
     bottom: auto;
     text-align: left;
@@ -316,6 +316,7 @@ async function drain() {
     mask-size: 100% 100%;
   }
   .overlay-text-left.hidden { opacity: 0; }
+  .overlay-text-left img { display: block; max-width: 100%; height: auto; margin: 0; }
   .overlay-text-left h1 {
     font-weight: 600;
     font-size: clamp(1.5rem, 6vw, 2.5rem);
