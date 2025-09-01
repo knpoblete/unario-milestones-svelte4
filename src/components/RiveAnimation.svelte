@@ -27,7 +27,7 @@
 
   // Content
   let slides = $state([
-    { year: "MANILA 2025", text: "It's a milestone in the making!", photo: "/photos/01_Manila 2025@4x.png" },
+    { year: "MANILA 2025", text: "It's a milestone in the making! <br> Capture the insights, connections, and moments that matter. Share your experience on LinkedIn using the hashtag <strong>#UNARIO2025.</strong>", photo: "/photos/01_Manila 2025@4x.png" },
     { year: "NEW YORK 2003", text: "First Formal Meeting: Defining the role of the Ombuds.", photo: "/photos/02_New York 2003@4x.png" },
     { year: "2007 Meeting", text: "Adopting a Shared Mission: Ombuds from diverse organizations dedicated to international cooperation.", photo: "/photos/03_2007 Meeting@4x.png" },
     { year: "ROME 2011", text: "Solidifying UNARIO's membership and identity.", photo: "/photos/04_Rome 2011@4x.png" },
@@ -188,7 +188,7 @@ async function drain() {
       >
         <img src={slides[idx].photo} />
         <h1>{slides[idx].year}</h1>
-        <p>{slides[idx].text}</p>
+        <p>{@html slides[idx].text}</p>
         
       </div>
 
@@ -200,7 +200,7 @@ async function drain() {
      >
      <img src={slides[idx_prev].photo} />
       <h1>{slides[idx_prev].year}</h1>
-      <p>{slides[idx_prev].text}</p>
+      <p>{@html slides[idx_prev].text}</p>
      </div>
 
      <div
@@ -259,16 +259,20 @@ async function drain() {
     gap: 0.5rem;
     opacity: 1;
     transition: opacity 0.2s ease; /* match HIDE_MS */
+    align-items: left;
   }
 
   .overlay-text-center.hidden { opacity: 0; }
 
-
+  .overlay-text-center img {
+    margin: 0;
+  }
+  
   .overlay-text-center h1 {
     font-weight: 600;
     font-size: clamp(1.5rem, 6vw, 2.5rem);
     margin: 0;
-    line-height: 1.1;
+    line-height: 0.8;
   }
 
   .overlay-text-center p {
@@ -276,7 +280,7 @@ async function drain() {
     color: #989898;
     font-size: clamp(1.25rem, 2.5vw, 1.5rem);
     margin: 0;
-    line-height: 1.3;
+    line-height: 1.2;
     opacity: 0.9;
   }
 
@@ -375,15 +379,15 @@ async function drain() {
     font-weight: 600;
     font-size: clamp(1.5rem, 6vw, 2.5rem);
     margin: 0;
-    line-height: 1.1;
+    /* line-height: 1.1; */
   }
 
   .overlay-text-right p {
     font-weight: 400;
     color: #989898;
-    font-size: clamp(1.25rem, 2.5vw, 1.25rem);
+    font-size: clamp(1.25rem, 2.5vw, 1.2rem);
     margin: 0;
-    line-height: 1.3;
+    /* line-height: 1.3; */
     opacity: 0.9;
   }
 
