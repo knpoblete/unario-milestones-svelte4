@@ -98,7 +98,7 @@ async function drain() {
       autoplay: true,
       stateMachines: STATE_MACHINE,
       layout: new rive.Layout({
-        fit: rive.Fit.COVER,
+        fit: rive.Fit.Contain,
         alignment: rive.Alignment.Center,
       }),
       autoBind: true,
