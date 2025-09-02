@@ -2,13 +2,6 @@
   import { onMount, onDestroy } from "svelte";
   import * as rive from "@rive-app/webgl2";
   import background_svg from "$svg/background.svg";
-  // import manila_2025 from "/photos/01_Manila 2025@4x.png";
-  // import new_york_2003 from "/photos/02_New York 2003@4x.png";
-  // import meeting_2007 from "/photos/03_2007 Meeting@4x.png";
-  // import rome_2011 from "/photos/04_Rome 2011@4x.png";
-  // import manila_2015 from "/photos/05_Manila 2015@4x.png";
-  // import bangkok_2019 from "/photos/06_Bangkok 2019@4x.png";
-  // import montevideo_2023 from "/photos/07_Montevideo 2023@4x.png";
 
   let canvas = $state();
   let riveInstance;
@@ -18,12 +11,10 @@
   let isHidden = $state(false);
   let hideTO;
   let animating = $state(false);
-  const HIDE_MS = 1300; // 0.2s (matches CSS transition)
+  const HIDE_MS = 1300;
   let pending = $state(0);
   let draining = false;
   const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-
 
   // Content
   let slides = $state([
@@ -46,11 +37,6 @@
   const NEXT_TRIGGER_NAME = "Next";
   let nextTriggerInput = null;
 
-  // function nextSlide() {
-    // idx = (idx + 1) % slides.length;
-    // idx_prev = (idx - 1 + slides.length) % slides.length;
-  // }
-
   function resizeCanvasToDisplaySize() {
     if (!canvas || !riveInstance) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -60,38 +46,97 @@
     riveInstance.resizeDrawingSurfaceToCanvas();
   }
 
+  // ======== 🔊 SOUND: low-latency Web Audio with HTMLAudio fallback ========
+  const CLICK_URL = "/sounds/click.wav"; // put file in static/sounds/click.mp3
 
-function onCanvasClick() {
-  // record this click and kick Rive right now
-  pending += 1;
-  nextTriggerInput?.fire?.();
+  let audioCtx = null;      // AudioContext | null
+  let clickBuffer = null;   // AudioBuffer | null
+  let htmlAudio = null;     // HTMLAudioElement fallback
 
-  // start the drain loop if not already running
-  if (!draining) drain();
-}
+  async function ensureDecodedBuffer() {
+    try {
+      if (!audioCtx) {
+        // Don't auto-start/suspend; resume happens on first user gesture
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (!clickBuffer) {
+        const res = await fetch(CLICK_URL, { cache: "force-cache" });
+        const arr = await res.arrayBuffer();
+        clickBuffer = await audioCtx.decodeAudioData(arr);
+      }
+      return true;
+    } catch (e) {
+      // Fallback to HTMLAudio if decoding/context fails
+      if (!htmlAudio) {
+        htmlAudio = new Audio(CLICK_URL);
+        htmlAudio.preload = "auto";
+      }
+      return false;
+    }
+  }
 
-async function drain() {
-  draining = true;
+  async function playClick() {
+    // Ensure buffer ready (may already be decoded)
+    const ok = await ensureDecodedBuffer();
 
-  // fade out once, then apply all queued steps while hidden
-  isHidden = true;
-  await sleep(HIDE_MS);
+    // On iOS/Safari, context may need a gesture to resume
+    if (audioCtx && audioCtx.state === "suspended") {
+      try { await audioCtx.resume(); } catch {}
+    }
 
-  while (pending > 0) {
-  pending -= 1;
-  idx = (idx + 1) % slides.length;   // this alone will recompute idx_prev/idx_next
-  await sleep(50);
-}
+    if (ok && audioCtx && clickBuffer) {
+      // Create short-lived source for zero latency
+      const src = audioCtx.createBufferSource();
+      src.buffer = clickBuffer;
+      src.connect(audioCtx.destination);
+      try { src.start(0); } catch {}
+    } else if (htmlAudio) {
+      try {
+        // Reuse element, rewind for “machine-gun” clicking
+        htmlAudio.currentTime = 0;
+        await htmlAudio.play();
+      } catch {}
+    }
+  }
+  // ========================================================================
 
-  // fade back in once with the final text
-  isHidden = false;
-  // give the fade-in a moment before accepting a new drain
-  await sleep(50);
+  async function onCanvasClick() {
+    // 🔊 play sound immediately on click
+    playClick();
 
-  draining = false;
-}
+    // record this click and kick Rive right now
+    pending += 1;
+    nextTriggerInput?.fire?.();
+
+    // start the drain loop if not already running
+    if (!draining) drain();
+  }
+
+  async function drain() {
+    draining = true;
+
+    // fade out once, then apply all queued steps while hidden
+    isHidden = true;
+    await sleep(HIDE_MS);
+
+    while (pending > 0) {
+      pending -= 1;
+      idx = (idx + 1) % slides.length;
+      await sleep(50);
+    }
+
+    // fade back in once with the final text
+    isHidden = false;
+    await sleep(50);
+
+    draining = false;
+  }
 
   onMount(() => {
+    // (Optional) warm up decode in the background so first click is snappy
+    // No sound will play until a user gesture due to browser audio policies.
+    ensureDecodedBuffer();
+
     riveInstance = new rive.Rive({
       src: "/animations/[approach_2].riv",
       canvas,
@@ -105,40 +150,25 @@ async function drain() {
       onLoad: () => {
         console.log("Rive loaded");
 
-        // ✅ Inspect all inputs on this state machine
+        // Grab inputs and cache the 'Next' trigger if you want it
         const inputs = riveInstance.stateMachineInputs(STATE_MACHINE) ?? [];
         inputs.forEach((input) => {
-          console.log("Input:", input.name, "Type:", input.type);
+          if (input.name === NEXT_TRIGGER_NAME) nextTriggerInput = input;
         });
 
-        // (Optional) find a specific input
-        // const isUp = inputs.find((i) => i.name === "isUp");
-        // const nextTrigger = inputs.find((i) => i.name === "Next" && i.type === "trigger");
-        // nextTrigger?.fire();
-
-        // Initial size
         resizeCanvasToDisplaySize();
       },
-    //   onStateChange: (event) => {
-    //     // Logs state changes like button presses
-    //     if (event.data[0] == "isDown") {
-		// 	console.log("State change:", event.data[0]); // array of state names entered
-		// 	onCanvasClick()
-		// }
-    onStateChange: () => {
-        // Logs state changes like button presses
+      onStateChange: () => {
+        // When Rive reports the button press, advance & play sound
         const inputs = riveInstance.stateMachineInputs(STATE_MACHINE) ?? [];
         inputs.forEach((input) => {
-          // console.log(input)
           if (input.name == "isDown" && input.value == true) {
-            console.log("State change:", input); 
-            console.log("State change:", input.name); // array of state names entered
-            onCanvasClick()
+            // 🔊 sound on Rive-press, too
+            playClick();
+            onCanvasClick();
           }
-        }
-      );
-		
-},
+        });
+      },
     });
 
     // canvas.addEventListener("pointerdown", onCanvasClick, { passive: true });
@@ -155,12 +185,14 @@ async function drain() {
 
   onDestroy(() => {
     clearTimeout(hideTO);
+    try { audioCtx?.close(); } catch {}
   });
 
   onDestroy(() => {
     clearTimeout(hideTO);
   });
 </script>
+
 
 <div class="scrollport">
   <div class="stage" role="img" aria-label="1920×1080 stage">
