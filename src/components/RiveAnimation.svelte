@@ -19,13 +19,15 @@
   // Content
   let slides = $state([
     { year: "MANILA 2025", text: "It's a milestone in the making! <br> Capture the insights, connections, and moments that matter. Share your experience on LinkedIn using the hashtag <strong>#UNARIO2025.</strong>", photo: "/photos/01_Manila 2025@4x.png" },
-    { year: "NEW YORK 2003", text: "First Formal Meeting: Defining the role of the Ombuds.", photo: "/photos/02_New York 2003@4x.png" },
-    { year: "2007 Meeting", text: "Adopting a Shared Mission: Ombuds from diverse organizations dedicated to international cooperation.", photo: "/photos/03_2007 Meeting@4x.png" },
-    { year: "ROME 2011", text: "Solidifying UNARIO's membership and identity.", photo: "/photos/04_Rome 2011@4x.png" },
-    { year: "MANILA 2015", text: "Recognizing the need for a network of ombuds and mediators.", photo: "/photos/05_Manila 2015@4x.png"  },
-    { year: "BANGKOK 2019", text: "Promoting dignity, civility, and mental health.", photo: "/photos/06_Bangkok 2019@4x.png"  },
-    { year: "MONTEVIDEO 2023", text: "Driving systemic change and addressing mental health.", photo: "/photos/07_Montevideo 2023@4x.png",  },
-    { year: "WASHINGTON, D.C. 2024", text: "Shaping the future by unlocking the potential of AI and technology.", photo: "/photos/08_Washington 2024@4x.png",  },
+    { year: "NEW YORK 2003", text: "First Formal Meeting: Defining the role of the Ombuds", photo: "/photos/02_New York 2003@4x.png" },
+    { year: "2006 MEETING", text: "Opening Doors: Expanding Membership Beyond the UN", photo: "/photos/03_2006 Meeting@4x.png" },
+    { year: "2007 MEETING", text: "Adopting a Shared Mission: Ombuds from diverse organizations dedicated to international cooperation", photo: "/photos/04_2007 Meeting@4x.png" },
+    { year: "ROME 2011", text: "Solidifying UNARIO's membership and identity", photo: "/photos/05_Rome 2011@4x.png" },
+    { year: "MANILA 2015", text: "Recognizing the need for a network of ombuds and mediators", photo: "/photos/06_Manila 2015@4x.png"  },
+    { year: "BANGKOK 2019", text: "Promoting dignity, civility, and mental health", photo: "/photos/07_Bangkok 2019@4x.png"  },
+    { year: "GENEVA 2022", text: "Strengthening Independence and Professional Standards", photo: "/photos/08_Geneva 2022@4x.png"  },
+    { year: "MONTEVIDEO 2023", text: "Driving systemic change and addressing mental health", photo: "/photos/09_Montevideo 2023@4x.png",  },
+    { year: "WASHINGTON, D.C. 2024", text: "Shaping the future by unlocking the potential of AI and technology", photo: "/photos/10_Washington 2024@4x.png",  },
   ]);
 
   let idx = $state(0);
