@@ -124,7 +124,7 @@
     while (pending > 0) {
       pending -= 1;
       idx = (idx + 1) % slides.length;
-      await sleep(50);
+      sleep(50);
     }
 
     // fade back in once with the final text
