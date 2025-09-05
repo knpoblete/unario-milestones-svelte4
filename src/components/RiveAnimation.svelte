@@ -4,6 +4,14 @@
   import background_svg from "$svg/background.svg";
   import img_1 from "$lib/photos/01_Manila 2025.png";
   import img_2 from "$lib/photos/02_New York 2003.png";
+  import img_3 from "$lib/photos/03_2006 Meeting.png";
+  import img_4 from "$lib/photos/04_2007 Meeting.png";
+  import img_5 from "$lib/photos/05_Rome 2011.png";
+  import img_6 from "$lib/photos/06_Manila 2015.png";
+  import img_7 from "$lib/photos/07_Bangkok 2019.png";
+  import img_8 from "$lib/photos/08_Geneva 2022.png";
+  import img_9 from "$lib/photos/09_Montevideo 2023.png";
+  import img_10 from "$lib/photos/10_Washington 2024.png";
 
   let canvas = $state();
   let riveInstance;
@@ -22,14 +30,14 @@
   let slides = $state([
     { year: "MANILA 2025", text: "It's a milestone in the making! <br> Capture the insights, connections, and moments that matter. Share your experience on LinkedIn using the hashtag <strong>#UNARIO2025.</strong>", photo: img_1 },
     { year: "NEW YORK 2003", text: "First Formal Meeting: Defining the role of the Ombuds", photo: img_2 },
-    { year: "2006 MEETING", text: "Opening Doors: Expanding Membership Beyond the UN", photo: "/photos/03_2006 Meeting.png" },
-    { year: "2007 MEETING", text: "Adopting a Shared Mission: Ombuds from diverse organizations dedicated to international cooperation", photo: "/photos/04_2007 Meeting.png" },
-    { year: "ROME 2011", text: "Solidifying UNARIO's membership and identity", photo: "/photos/05_Rome 2011.png" },
-    { year: "MANILA 2015", text: "Recognizing the need for a network of ombuds and mediators", photo: "/photos/06_Manila 2015.png"  },
-    { year: "BANGKOK 2019", text: "Promoting dignity, civility, and mental health", photo: "/photos/07_Bangkok 2019.png"  },
-    { year: "GENEVA 2022", text: "Strengthening Independence and Professional Standards", photo: "/photos/08_Geneva 2022.png"  },
-    { year: "MONTEVIDEO 2023", text: "Driving systemic change and addressing mental health", photo: "/photos/09_Montevideo 2023.png",  },
-    { year: "WASHINGTON, D.C. 2024", text: "Shaping the future by unlocking the potential of AI and technology", photo: "/photos/10_Washington 2024.png",  },
+    { year: "2006 MEETING", text: "Opening Doors: Expanding Membership Beyond the UN", photo: img_3 },
+    { year: "2007 MEETING", text: "Adopting a Shared Mission: Ombuds from diverse organizations dedicated to international cooperation", photo: img_4 },
+    { year: "ROME 2011", text: "Solidifying UNARIO's membership and identity", photo: img_5 },
+    { year: "MANILA 2015", text: "Recognizing the need for a network of ombuds and mediators", photo: img_6  },
+    { year: "BANGKOK 2019", text: "Promoting dignity, civility, and mental health", photo: img_7  },
+    { year: "GENEVA 2022", text: "Strengthening Independence and Professional Standards", photo: img_8  },
+    { year: "MONTEVIDEO 2023", text: "Driving systemic change and addressing mental health", photo: img_9  },
+    { year: "WASHINGTON, D.C. 2024", text: "Shaping the future by unlocking the potential of AI and technology", photo: img_10  },
   ]);
 
   let idx = $state(0);
