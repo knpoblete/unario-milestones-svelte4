@@ -2,6 +2,8 @@
   import { onMount, onDestroy } from "svelte";
   import * as rive from "@rive-app/webgl2";
   import background_svg from "$svg/background.svg";
+  import img_1 from "$lib/photos/01_Manila 2025.png";
+  import img_2 from "$lib/photos/02_New York 2003.png";
 
   let canvas = $state();
   let riveInstance;
@@ -18,8 +20,8 @@
 
   // Content
   let slides = $state([
-    { year: "MANILA 2025", text: "It's a milestone in the making! <br> Capture the insights, connections, and moments that matter. Share your experience on LinkedIn using the hashtag <strong>#UNARIO2025.</strong>", photo: "/photos/01_Manila 2025.png" },
-    { year: "NEW YORK 2003", text: "First Formal Meeting: Defining the role of the Ombuds", photo: "/photos/02_New York 2003.png" },
+    { year: "MANILA 2025", text: "It's a milestone in the making! <br> Capture the insights, connections, and moments that matter. Share your experience on LinkedIn using the hashtag <strong>#UNARIO2025.</strong>", photo: img_1 },
+    { year: "NEW YORK 2003", text: "First Formal Meeting: Defining the role of the Ombuds", photo: img_2 },
     { year: "2006 MEETING", text: "Opening Doors: Expanding Membership Beyond the UN", photo: "/photos/03_2006 Meeting.png" },
     { year: "2007 MEETING", text: "Adopting a Shared Mission: Ombuds from diverse organizations dedicated to international cooperation", photo: "/photos/04_2007 Meeting.png" },
     { year: "ROME 2011", text: "Solidifying UNARIO's membership and identity", photo: "/photos/05_Rome 2011.png" },
