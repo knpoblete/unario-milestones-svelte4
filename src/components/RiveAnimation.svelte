@@ -223,7 +223,6 @@
     <!-- Your text overlays -->
     {#if slides.length}
       <div class="overlay-text-center" class:hidden={isHidden} aria-live="polite" aria-hidden={isHidden}>
-        <link rel="preload" as="image" href={slides[idx].photo}>
         <img src={slides[idx].photo} />
         <h1>{slides[idx].year}</h1>
         <p>{@html slides[idx].text}</p>
@@ -232,8 +231,11 @@
       <div class="overlay-text-left" class:hidden={isHidden} aria-live="polite" aria-hidden={isHidden}>
         <img src={slides[idx_prev].photo} />
         <h1>{slides[idx_prev].year}</h1>
-        <p>{@html slides[idx_prev].text}</p>
-        
+        <p>{@html slides[idx_prev].text}</p> 
+      </div>
+
+      <div class="overlay-text-right" class:hidden={isHidden} aria-live="polite" aria-hidden={isHidden}>
+        <img src={slides[idx_next].photo} />
       </div>
 
       <div class="overlay-text-right" class:hidden={isHidden} aria-live="polite" aria-hidden={isHidden}>
@@ -379,10 +381,10 @@
 
   .overlay-text-right {
     display: inline-block;
-    transform: rotate(45deg);
+    /* transform: rotate(45deg); */
     max-width: 450px;
-    top: 45%;
-    left: 98%;
+    /* top: 45%;
+    left: 98%; */
     right: auto;
     bottom: auto;
     text-align: left;
@@ -390,7 +392,8 @@
     transition: opacity 0.1s ease;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
-    mask-image: linear-gradient(to right, black 1%, transparent 40%);
+    /* mask-image: linear-gradient(to right, black 1%, transparent 40%); */
+    opacity: 0;
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
   }
