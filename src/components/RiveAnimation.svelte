@@ -223,6 +223,7 @@
     <!-- Your text overlays -->
     {#if slides.length}
       <div class="overlay-text-center" class:hidden={isHidden} aria-live="polite" aria-hidden={isHidden}>
+        <link rel="preload" as="image" href={slides[idx].photo}>
         <img src={slides[idx].photo} />
         <h1>{slides[idx].year}</h1>
         <p>{@html slides[idx].text}</p>
